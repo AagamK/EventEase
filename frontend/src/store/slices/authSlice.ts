@@ -2,6 +2,35 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { AuthState, User } from '../../types';
 import { authService } from '../../services/api';
 
+
+
+export const loginUser = createAsyncThunk(
+  'auth/login',
+  async (credentials: { email: string; password: string }, { rejectWithValue }) => {
+    try {
+      // THIS IS THE CHANGED PART - We now call the real API
+      const response = await authService.login(credentials);
+      return response.data; // { user: User, token: string }
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Login failed');
+    }
+  }
+);
+
+export const registerUser = createAsyncThunk(
+  'auth/register',
+  async (userData: { email: string; password: string; firstName: string; lastName: string }, { rejectWithValue }) => {
+    try {
+      // THIS IS THE CHANGED PART - We now call the real API
+      const response = await authService.register(userData);
+      return response.data; // { user: User, token: string }
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Registration failed');
+    }
+  }
+);
+
+
 const initialState: AuthState = {
   user: null,
   token: localStorage.getItem('token'),
@@ -9,56 +38,56 @@ const initialState: AuthState = {
   isLoading: false,
 };
 
-export const loginUser = createAsyncThunk(
-  'auth/login',
-  async (credentials: { email: string; password: string }, { rejectWithValue }) => {
-    try {
-      // Static authentication - accept any credentials
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+// export const loginUser = createAsyncThunk(
+//   'auth/login',
+//   async (credentials: { email: string; password: string }, { rejectWithValue }) => {
+//     try {
+//       // Static authentication - accept any credentials
+//       // Simulate API call delay
+//       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Return mock user data
-      return {
-        user: {
-          id: 1,
-          email: credentials.email,
-          firstName: 'Demo',
-          lastName: 'User',
-          createdAt: new Date().toISOString(),
-        },
-        token: 'demo-token-' + Date.now(),
-      };
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || 'Login failed');
-    }
-  }
-);
+//       // Return mock user data
+//       return {
+//         user: {
+//           id: 1,
+//           email: credentials.email,
+//           firstName: 'Demo',
+//           lastName: 'User',
+//           createdAt: new Date().toISOString(),
+//         },
+//         token: 'demo-token-' + Date.now(),
+//       };
+//     } catch (error: any) {
+//       return rejectWithValue(error.response?.data?.message || 'Login failed');
+//     }
+//   }
+// );
 
 
-export const registerUser = createAsyncThunk(
-  'auth/register',
-  async (userData: { email: string; password: string; firstName: string; lastName: string }, { rejectWithValue }) => {
-    try {
-      // Static authentication - accept any registration
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+// export const registerUser = createAsyncThunk(
+//   'auth/register',
+//   async (userData: { email: string; password: string; firstName: string; lastName: string }, { rejectWithValue }) => {
+//     try {
+//       // Static authentication - accept any registration
+//       // Simulate API call delay
+//       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Return mock user data
-      return {
-        user: {
-          id: Date.now(),
-          email: userData.email,
-          firstName: userData.firstName,
-          lastName: userData.lastName,
-          createdAt: new Date().toISOString(),
-        },
-        token: 'demo-token-' + Date.now(),
-      };
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || 'Registration failed');
-    }
-  }
-);
+//       // Return mock user data
+//       return {
+//         user: {
+//           id: Date.now(),
+//           email: userData.email,
+//           firstName: userData.firstName,
+//           lastName: userData.lastName,
+//           createdAt: new Date().toISOString(),
+//         },
+//         token: 'demo-token-' + Date.now(),
+//       };
+//     } catch (error: any) {
+//       return rejectWithValue(error.response?.data?.message || 'Registration failed');
+//     }
+//   }
+// );
 
 
 // ADDED: Thunk to fetch user profile if authenticated

@@ -72,11 +72,6 @@ const RegisterForm: React.FC = () => {
               sign in to your existing account
             </Link>
           </p>
-          <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
-            <p className="text-sm text-yellow-800">
-              <strong>Demo:</strong> Any registration will work. Use any email and password.
-            </p>
-          </div>
         </div>
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
