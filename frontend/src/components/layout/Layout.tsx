@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useAuth } from '../../hooks/useAuth';
 import { getProfile } from '../../store/slices/authSlice';
 import Header from './Header';
-import Sidebar from './Sidebar';
+// import Sidebar from './Sidebar';
 import LoadingSpinner from '../common/LoadingSpinner';
 
 const Layout: React.FC = () => {
@@ -33,7 +33,7 @@ const Layout: React.FC = () => {
       {/* The Header is now only rendered if authenticated */}
       <Header />
       <div className="flex">
-        <Sidebar />
+        {/* <Sidebar /> */}
         <main className="flex-1 p-6">
           <Outlet />
         </main>
